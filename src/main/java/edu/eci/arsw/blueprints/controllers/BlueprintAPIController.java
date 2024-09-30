@@ -28,19 +28,19 @@ public class BlueprintAPIController {
 
     @Autowired
     BlueprintsServices bps;
-
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> manejadorGetRecursoXX() {
+    public ResponseEntity<?> getAllBlueprints() {
         try {
             //obtener datos que se enviarán a través del
 
-            bps.getAllBlueprints();
+            System.out.println(bps.getAllBlueprints());
             return null; //new ResponseEntity<>(data,HttpStatus.ACCEPTED);
         } catch (Exception ex) {
             //Logger.getLogger(XXController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>("Error bla bla bla", HttpStatus.NOT_FOUND);
         }
     }
+
 }
 
 
