@@ -8,6 +8,7 @@ package edu.eci.arsw.blueprints.controllers;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.eci.arsw.blueprints.model.Blueprint;
@@ -57,17 +58,17 @@ public class BlueprintAPIController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> putblueprints(@RequestBody String author){
+    public ResponseEntity<?> addNewBlueprint(@RequestBody Blueprint blueprint) {
         try {
-            //registrar dato
-
-            
+            // Registrar el nuevo plano en el sistema
+            bps.addNewBlueprint(blueprint);
+            // Retorna 201 Created si la operación es exitosa
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception ex) {
-            Logger.getLogger(XXController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            // Retorna 403 Forbidden si hay un error al persistir (por ejemplo, si ya existe el plano)
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
     }
 
 
