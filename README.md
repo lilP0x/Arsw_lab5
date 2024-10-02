@@ -112,11 +112,25 @@ Del anterior diagrama de componentes (de alto nivel), se desprendió el siguient
 El componente BlueprintsRESTAPI funcionará en un entorno concurrente. Es decir, atederá múltiples peticiones simultáneamente (con el stack de aplicaciones usado, dichas peticiones se atenderán por defecto a través múltiples de hilos). Dado lo anterior, debe hacer una revisión de su API (una vez funcione), e identificar:
 
 * Qué condiciones de carrera se podrían presentar?
+
+1. Acceso concurrente a los blueprints:
+
+- Si múltiples hilos intentan agregar, modificar o consultar blueprints en simultáneo, puede ocurrir una condición de carrera si el acceso no está adecuadamente sincronizado.
+- En particular, el método addNewBlueprint, donde se consulta si un blueprint ya existe y luego se agrega, no es atómico y puede llevar a inconsistencias si se intenta agregar el mismo blueprint desde diferentes hilos.
+2. Métodos de consulta simultáneos:
+
+- Métodos como getAllBlueprints, getBlueprintsByAuthor, y getBlueprint pueden enfrentar condiciones de carrera si varios hilos leen mientras otros modifican la colección de blueprints.
+
 * Cuales son las respectivas regiones críticas?
 
 Ajuste el código para suprimir las condiciones de carrera. Tengan en cuenta que simplemente sincronizar el acceso a las operaciones de persistencia/consulta DEGRADARÁ SIGNIFICATIVAMENTE el desempeño de API, por lo cual se deben buscar estrategias alternativas.
 
 Escriba su análisis y la solución aplicada en el archivo ANALISIS_CONCURRENCIA.txt
+
+a. InMemoryBlueprintPersistence: El almacenamiento en memoria de los blueprints es una región crítica, ya que no es Thread-safe. Si diferentes hilos intentan modificar esta colección simultáneamente, pueden sobrescribirse o provocar errores de lectura.
+
+b. Operaciones de consulta y escritura simultáneas: Si un hilo está consultando los blueprints mientras otro los está modificando (agregando o eliminando), esto podría causar inconsistencias.
+
 
 #### Criterios de evaluación
 

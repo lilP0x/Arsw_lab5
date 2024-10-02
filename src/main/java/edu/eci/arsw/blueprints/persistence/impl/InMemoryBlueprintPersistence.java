@@ -8,7 +8,7 @@ import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
+import java.util.concurrent.ConcurrentHashMap;
 /**
  * In-memory implementation of BlueprintsPersistence.
  * Stores blueprints in a HashMap.
@@ -16,8 +16,7 @@ import java.util.*;
 @Service
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
 
-    private final Map<Tuple<String, String>, Blueprint> blueprints = new HashMap<>();
-
+    private final ConcurrentHashMap<Tuple<String, String>, Blueprint> blueprints = new ConcurrentHashMap<>();
     public InMemoryBlueprintPersistence() {
         Point[] pts1 = new Point[]{new Point(140, 140), new Point(115, 115), new Point(130, 130)};
         Point[] pts2 = new Point[]{new Point(200, 150), new Point(180, 170), new Point(190, 120)};
@@ -61,7 +60,7 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
 
     @Override
     public Set<Blueprint> getAllBlueprints() {
-        return new HashSet<>(blueprints.values());
+        return Collections.unmodifiableSet(new HashSet<>(blueprints.values()));
     }
 
     @Override
@@ -100,6 +99,6 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
             throw new BlueprintNotFoundException("No blueprints found for author: " + author);
         }
 
-        return authorBlueprints;
+        return Collections.unmodifiableSet(authorBlueprints);
     }
 }
