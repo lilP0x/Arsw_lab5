@@ -131,6 +131,10 @@ a. InMemoryBlueprintPersistence: El almacenamiento en memoria de los blueprints 
 
 b. Operaciones de consulta y escritura simultáneas: Si un hilo está consultando los blueprints mientras otro los está modificando (agregando o eliminando), esto podría causar inconsistencias.
 
+![](img/Image1.jpeg)
+![](img/Image2.jpeg)
+![](img/Image3.jpeg)
+![](img/Image4.jpeg)
 
 #### Criterios de evaluación
 
